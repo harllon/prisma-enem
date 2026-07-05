@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f3ee" />
+    <meta
+      name="description"
+      content="Monte questões e simulados do ENEM com dificuldade baseada em dados TRI."
+    />
+    <title>Prisma — seu simulado ENEM, do seu jeito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css?v=5" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Prisma, início">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M6 25 16 5l10 20H6Z"/><path d="m11 25 5-10 5 10"/></svg>
+        </span>
+        <span>prisma</span>
+      </a>
+      <nav>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#metodologia">Metodologia</a>
+        <span class="data-status"><i></i> Base conectada</span>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>●</span> QUESTÕES REAIS · DIFICULDADE TRI</p>
+          <h1>Seu simulado,<br /><em>do seu jeito.</em></h1>
+          <p class="hero-description">
+            Escolha anos, áreas e o nível de cada questão. O Prisma busca provas antigas,
+            preserva textos, gráficos e imagens — e monta seu caderno em segundos.
+          </p>
+          <div class="hero-proof">
+            <div><strong>3.000+</strong><span>questões catalogadas</span></div>
+            <div><strong>16</strong><span>edições do ENEM</span></div>
+            <div><strong>TRI</strong><span>dificuldade por item</span></div>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="paper paper-back"><span>38</span></div>
+          <div class="paper paper-front">
+            <div class="paper-top"><b>SIMULADO</b><span>01 / 40</span></div>
+            <div class="paper-lines">
+              <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="mini-chart">
+              <span style="height: 42%"></span><span style="height: 70%"></span>
+              <span style="height: 55%"></span><span style="height: 88%"></span>
+            </div>
+            <div class="bubbles"><i>A</i><i>B</i><i>C</i><i>D</i><i>E</i></div>
+          </div>
+          <div class="difficulty-float"><i></i><span><small>NÍVEL TRI</small>Médio</span><b>0,42</b></div>
+        </div>
+      </section>
+
+      <section class="builder-section" id="gerador">
+        <div class="section-heading">
+          <p class="eyebrow">MONTE AGORA</p>
+          <h2>O que você quer praticar hoje?</h2>
+        </div>
+
+        <form class="builder" id="builder-form">
+          <div class="builder-main">
+            <fieldset>
+              <legend>Formato</legend>
+              <div class="segmented" role="radiogroup" aria-label="Formato">
+                <label>
+                  <input type="radio" name="mode" value="single" />
+                  <span>
+                    <svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+                    Questão única
+                  </span>
+                </label>
+                <label>
+                  <input type="radio" name="mode" value="booklet" checked />
+                  <span>
+                    <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z"/></svg>
+                    Caderno
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="quantity-fieldset">
+              <div class="legend-row">
+                <legend>Quantidade de questões</legend>
+                <span id="total-warning" class="total-warning">Total: 40</span>
+              </div>
+              <div class="preset-row" id="presets">
+                <button type="button" data-total="10">10</button>
+                <button type="button" data-total="20">20</button>
+                <button type="button" data-total="40" class="active">40</button>
+                <button type="button" data-total="60">60</button>
+                <button type="button" data-total="90">90</button>
+                <label class="custom-total">Outra <input id="total-input" type="number" min="1" max="90" value="40" /></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <div class="legend-row">
+                <legend>Distribuição por dificuldade</legend>
+                <button type="button" class="text-button" id="balance-button">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M6 14v6"/></svg>
+                  Equilibrar
+                </button>
+              </div>
+              <p class="field-help">Comparada às questões da mesma área e edição.</p>
+              <div class="difficulty-grid" id="difficulty-grid">
+                <div class="difficulty-item" data-level="facil">
+                  <div class="difficulty-label"><i class="dot easy"></i><span><b>Fácil</b><small>25% mais acessíveis</small></span></div>
+                  <div class="stepper">
+                    <button type="button" data-action="minus" aria-label="Diminuir fáceis">−</button>
+                    <input type="number" min="0" max="90" value="12" aria-label="Questões fáceis" />
+                    <button type="button" data-action="plus" aria-label="Aumentar fáceis">+</button>
+                  </div>
+                  <span class="distribution-bar easy" style="--width:25%"></span>
+                </div>
+                <div class="difficulty-item" data-level="media">
+                  <div class="difficulty-label"><i class="dot medium"></i><span><b>Média</b><small>percentis 25–65</small></span></div>
+                  <div class="stepper">
+                    <button type="button" data-action="minus" aria-label="Diminuir médias">−</button>
+                    <input type="number" min="0" max="90" value="16" aria-label="Questões médias" />
+                    <button type="button" data-action="plus" aria-label="Aumentar médias">+</button>
+                  </div>
+                  <span class="distribution-bar medium" style="--width:35%"></span>
+                </div>
+                <div class="difficulty-item" data-level="dificil">
+                  <div class="difficulty-label"><i class="dot hard"></i><span><b>Difícil</b><small>percentis 65–90</small></span></div>
+                  <div class="stepper">
+                    <button type="button" data-action="minus" aria-label="Diminuir difíceis">−</button>
+                    <input type="number" min="0" max="90" value="8" aria-label="Questões difíceis" />
+                    <button type="button" data-action="plus" aria-label="Aumentar difíceis">+</button>
+                  </div>
+                  <span class="distribution-bar hard" style="--width:25%"></span>
+                </div>
+                <div class="difficulty-item" data-level="muito-dificil">
+                  <div class="difficulty-label"><i class="dot brutal"></i><span><b>Muito difícil</b><small>10% mais exigentes</small></span></div>
+                  <div class="stepper">
+                    <button type="button" data-action="minus" aria-label="Diminuir muito difíceis">−</button>
+                    <input type="number" min="0" max="90" value="4" aria-label="Questões muito difíceis" />
+                    <button type="button" data-action="plus" aria-label="Aumentar muito difíceis">+</button>
+                  </div>
+                  <span class="distribution-bar brutal" style="--width:15%"></span>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <aside class="builder-side">
+            <fieldset>
+              <legend>Anos das provas</legend>
+              <div class="year-range">
+                <label>De
+                  <select id="year-from" aria-label="Ano inicial"></select>
+                </label>
+                <span>→</span>
+                <label>Até
+                  <select id="year-to" aria-label="Ano final"></select>
+                </label>
+              </div>
+              <p class="field-help" id="year-count">7 edições selecionadas</p>
+            </fieldset>
+
+            <fieldset>
+              <legend>Áreas do conhecimento</legend>
+              <div class="area-options">
+                <label><input type="checkbox" name="area" value="linguagens" checked /><span><i>LC</i>Linguagens</span></label>
+                <label><input type="checkbox" name="area" value="ciencias-humanas" checked /><span><i>CH</i>Humanas</span></label>
+                <label><input type="checkbox" name="area" value="ciencias-natureza" checked /><span><i>CN</i>Natureza</span></label>
+                <label><input type="checkbox" name="area" value="matematica" checked /><span><i>MT</i>Matemática</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Disciplinas <span class="optional-label">opcional</span></legend>
+              <p class="field-help">Deixe todas vazias para não restringir.</p>
+              <div class="subject-groups">
+                <div class="subject-group" data-area-group="ciencias-natureza">
+                  <small>Ciências da Natureza</small>
+                  <div class="subject-options">
+                    <label><input type="checkbox" name="subject" value="biologia" data-area="ciencias-natureza" /><span>Biologia</span></label>
+                    <label><input type="checkbox" name="subject" value="fisica" data-area="ciencias-natureza" /><span>Física</span></label>
+                    <label><input type="checkbox" name="subject" value="quimica" data-area="ciencias-natureza" /><span>Química</span></label>
+                  </div>
+                </div>
+                <div class="subject-group" data-area-group="ciencias-humanas">
+                  <small>Ciências Humanas</small>
+                  <div class="subject-options">
+                    <label><input type="checkbox" name="subject" value="historia" data-area="ciencias-humanas" /><span>História</span></label>
+                    <label><input type="checkbox" name="subject" value="geografia" data-area="ciencias-humanas" /><span>Geografia</span></label>
+                    <label><input type="checkbox" name="subject" value="filosofia" data-area="ciencias-humanas" /><span>Filosofia</span></label>
+                    <label><input type="checkbox" name="subject" value="sociologia" data-area="ciencias-humanas" /><span>Sociologia</span></label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Assunto específico <span class="optional-label">opcional</span></legend>
+              <p class="field-help" id="topic-help">Escolha uma área ou disciplina para ver os assuntos catalogados.</p>
+              <div class="topic-field">
+                <svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg>
+                <select id="topic-input" aria-label="Assunto específico" disabled>
+                  <option value="">Todos os assuntos</option>
+                </select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Língua estrangeira</legend>
+              <div class="language-row">
+                <label><input type="radio" name="language" value="ingles" checked /><span>Inglês</span></label>
+                <label><input type="radio" name="language" value="espanhol" /><span>Espanhol</span></label>
+              </div>
+            </fieldset>
+
+            <div class="summary-box">
+              <span>Seu caderno</span>
+              <strong id="summary-total">40 questões</strong>
+            <p id="summary-details">2009–2024 · Todas as áreas</p>
+            </div>
+
+            <button class="generate-button" type="submit" id="generate-button">
+              <span>Sortear meu caderno</span>
+              <svg viewBox="0 0 24 24"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg>
+            </button>
+            <p class="source-note">
+              <svg viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Questões públicas. Dados de dificuldade dos microdados INEP.
+            </p>
+          </aside>
+        </form>
+      </section>
+
+      <section class="results-section" id="results" hidden>
+        <div class="results-toolbar no-print">
+          <div>
+            <p class="eyebrow">CADERNO PRONTO</p>
+            <h2 id="results-title">Seu simulado</h2>
+            <p id="results-subtitle"></p>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="secondary-button" id="regenerate-button">
+              <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66L20 8M20 3v5h-5"/></svg>
+              Sortear outro
+            </button>
+            <button type="button" class="print-button" id="print-button">
+              <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+              Salvar em PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="print-cover">
+          <span class="print-brand">PRISMA · ENEM</span>
+          <h1>Simulado personalizado</h1>
+          <p id="print-cover-meta"></p>
+          <div class="student-line"><span>Nome</span><i></i></div>
+          <div class="student-line"><span>Data</span><i></i></div>
+        </div>
+
+        <div class="question-list" id="question-list"></div>
+
+        <section class="answer-key" id="answer-key">
+          <div class="answer-key-header">
+            <div><p class="eyebrow">CONFIRA DEPOIS</p><h2>Gabarito</h2></div>
+            <button type="button" class="secondary-button no-print" id="toggle-answers">Mostrar respostas</button>
+          </div>
+          <div class="answer-grid answers-hidden" id="answer-grid"></div>
+        </section>
+      </section>
+
+      <section class="how-section" id="como-funciona">
+        <div class="section-heading">
+          <p class="eyebrow">SEM ACHISMO</p>
+          <h2>Da prova oficial para o seu caderno</h2>
+        </div>
+        <div class="steps">
+          <article><span>01</span><h3>Você define o treino</h3><p>Escolha volume, período, áreas e a proporção de cada nível.</p></article>
+          <article><span>02</span><h3>A TRI entra em cena</h3><p>O parâmetro b publicado nos microdados classifica a dificuldade do item.</p></article>
+          <article><span>03</span><h3>O Prisma preserva tudo</h3><p>Textos, gráficos, figuras e alternativas chegam juntos ao caderno.</p></article>
+          <article><span>04</span><h3>Você pratica ou imprime</h3><p>Resolva na tela, revele o gabarito ou salve uma versão limpa em PDF.</p></article>
+        </div>
+      </section>
+
+      <section class="method-section" id="metodologia">
+        <div>
+          <p class="eyebrow">METODOLOGIA ABERTA</p>
+          <h2>Dificuldade que<br />dá para explicar.</h2>
+        </div>
+        <div class="method-copy">
+          <p>O Prisma ordena o parâmetro <b>b</b> dentro de cada área e edição. Assim, Matemática é comparada com Matemática do mesmo ano — sem misturar escalas que se comportam de maneiras diferentes.</p>
+          <div class="scale">
+            <span class="easy"><b>Fácil</b>0–25%</span>
+            <span class="medium"><b>Média</b>25–65%</span>
+            <span class="hard"><b>Difícil</b>65–90%</span>
+            <span class="brutal"><b>Muito difícil</b>90–100%</span>
+          </div>
+          <p class="method-note">Itens sem parâmetro calibrado ou com calibração instável ficam fora do sorteio por nível. O catálogo curricular lê enunciado, alternativas e habilidade de todas as questões e organiza os assuntos por disciplina.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand" href="#"><span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M6 25 16 5l10 20H6Z"/><path d="m11 25 5-10 5 10"/></svg></span><span>prisma</span></a>
+      <p>Feito para estudar com intenção.</p>
+      <p>Dados: XTRI · INEP · questões públicas do ENEM</p>
+    </footer>
+
+    <div class="loading-overlay" id="loading" hidden>
+      <div class="loader-card">
+        <div class="loader-prism"><i></i><i></i><i></i></div>
+        <h3 id="loading-title">Montando seu caderno…</h3>
+        <p id="loading-message">Buscando questões e imagens nas provas oficiais.</p>
+        <div class="loading-bar"><span></span></div>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="/app.js?v=8" defer></script>
+  </body>
+</html>
