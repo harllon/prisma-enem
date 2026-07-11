@@ -1189,7 +1189,7 @@ async function proxyMedia(requestUrl, res) {
   sendJson(res, 404, { error: "Figura indisponível nas fontes conhecidas." });
 }
 
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   const requestUrl = new URL(req.url, `http://${req.headers.host || "localhost"}`);
   try {
     if (requestUrl.pathname === "/api/status" && req.method === "GET") {
@@ -1236,7 +1236,9 @@ const server = http.createServer(async (req, res) => {
       supportedTopics: error.supportedTopics
     });
   }
-});
+}
+
+const server = http.createServer(handleRequest);
 
 function startServer() {
   const onListening = () => {
@@ -1253,11 +1255,11 @@ function startServer() {
   return server;
 }
 
-if (require.main === module || IS_VERCEL) {
+if (require.main === module) {
   startServer();
 }
 
-module.exports = {
+Object.assign(handleRequest, {
   annotateDifficulties,
   detailedTopicsFor,
   difficultyFor,
@@ -1275,4 +1277,6 @@ module.exports = {
   subjectFor,
   topicsFor,
   TOPICS
-};
+});
+
+module.exports = handleRequest;
