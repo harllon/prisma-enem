@@ -8,14 +8,13 @@ const IS_VERCEL = Boolean(process.env.VERCEL);
 const LOCAL_HOST = process.env.HOST || "127.0.0.1";
 const PUBLIC_DIR = path.join(__dirname, "public");
 const XTRI_API = "https://api.questoes.xtri.online/api";
-const QUESTION_INDEX_PATH = path.join(__dirname, "data", "question-index.json");
 const listCache = new Map();
 const detailCache = new Map();
 const CACHE_TTL = 30 * 60 * 1000;
 let questionIndex = new Map();
 
 try {
-  const indexed = JSON.parse(fs.readFileSync(QUESTION_INDEX_PATH, "utf8"));
+  const indexed = require("./data/question-index.json");
   questionIndex = new Map(indexed.map((question) => [question.id, question]));
 } catch {
   questionIndex = new Map();

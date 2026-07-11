@@ -23,16 +23,16 @@ Acesse `http://127.0.0.1:4173`.
 
 ## Deploy na Vercel
 
-Esta versão já inclui `vercel.json`. No painel da Vercel, use:
+Esta versão já inclui `vercel.json` e a função `api/index.js`. No painel da
+Vercel, use:
 
 - Framework Preset: `Other`;
 - Build Command: vazio/sem build;
 - Root Directory: a pasta raiz do app, onde ficam `server.js`, `public/`,
   `data/` e `vercel.json`.
 
-O `server.js` foi preparado para ser capturado como função Node.js pela Vercel
-e continua funcionando localmente com `npm start`. O `includeFiles` do
-`vercel.json` usa uma única string de glob, como exigido pelo schema da Vercel.
+Na Vercel, `api/index.js` recebe todas as rotas via rewrite e reutiliza a lógica
+do `server.js`. Localmente, o app continua funcionando com `npm start`.
 
 ## Dados e classificação
 

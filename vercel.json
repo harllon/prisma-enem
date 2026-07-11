@@ -2,10 +2,15 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "buildCommand": null,
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "destination": "/api/index?path=:path*"
+    }
+  ],
   "functions": {
-    "server.js": {
-      "maxDuration": 60,
-      "includeFiles": "{data/question-index.json,public/**}"
+    "api/index.js": {
+      "maxDuration": 60
     }
   }
 }
