@@ -21,6 +21,18 @@ npm start
 
 Acesse `http://127.0.0.1:4173`.
 
+## Deploy na Vercel
+
+Esta versão já inclui `vercel.json`. No painel da Vercel, use:
+
+- Framework Preset: `Other`;
+- Build Command: vazio/sem build;
+- Root Directory: a pasta raiz do app, onde ficam `server.js`, `public/`,
+  `data/` e `vercel.json`.
+
+O `server.js` foi preparado para ser capturado como Node.js Server pela Vercel
+e continua funcionando localmente com `npm start`.
+
 ## Dados e classificação
 
 - Conteúdo e parâmetros TRI: API pública da XTRI, construída sobre questões do ENEM

@@ -4,7 +4,8 @@ const path = require("node:path");
 const { URL } = require("node:url");
 
 const PORT = Number(process.env.PORT || 4173);
-const HOST = process.env.HOST || "127.0.0.1";
+const IS_VERCEL = Boolean(process.env.VERCEL);
+const LOCAL_HOST = process.env.HOST || "127.0.0.1";
 const PUBLIC_DIR = path.join(__dirname, "public");
 const XTRI_API = "https://api.questoes.xtri.online/api";
 const QUESTION_INDEX_PATH = path.join(__dirname, "data", "question-index.json");
@@ -521,7 +522,7 @@ async function fetchJson(url) {
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
-      "User-Agent": "PrismaENEM/5.0"
+      "User-Agent": "PrismaENEM/6.0"
     },
     signal: AbortSignal.timeout(20000)
   });
@@ -1167,7 +1168,7 @@ async function proxyMedia(requestUrl, res) {
       const target = new URL(candidate);
       if (target.protocol !== "https:" || !allowedHosts.has(target.hostname)) continue;
       const response = await fetch(target, {
-        headers: { Accept: "image/*", "User-Agent": "PrismaENEM/5.0" },
+        headers: { Accept: "image/*", "User-Agent": "PrismaENEM/6.0" },
         signal: AbortSignal.timeout(15000)
       });
       const contentType = response.headers.get("content-type") || "";
@@ -1237,10 +1238,23 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-if (require.main === module) {
-  server.listen(PORT, HOST, () => {
-    console.log(`Prisma ENEM disponível em http://${HOST}:${PORT}`);
-  });
+function startServer() {
+  const onListening = () => {
+    const localUrl = IS_VERCEL ? `http://localhost:${PORT}` : `http://${LOCAL_HOST}:${PORT}`;
+    console.log(`Prisma ENEM disponível em ${localUrl}`);
+  };
+
+  if (IS_VERCEL) {
+    server.listen(PORT, onListening);
+  } else {
+    server.listen(PORT, LOCAL_HOST, onListening);
+  }
+
+  return server;
+}
+
+if (require.main === module || IS_VERCEL) {
+  startServer();
 }
 
 module.exports = {
@@ -1256,6 +1270,8 @@ module.exports = {
   questionSearchText,
   resolveTopic,
   seededRandom,
+  server,
+  startServer,
   subjectFor,
   topicsFor,
   TOPICS
