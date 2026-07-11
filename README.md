@@ -30,8 +30,9 @@ Esta versão já inclui `vercel.json`. No painel da Vercel, use:
 - Root Directory: a pasta raiz do app, onde ficam `server.js`, `public/`,
   `data/` e `vercel.json`.
 
-O `server.js` foi preparado para ser capturado como Node.js Server pela Vercel
-e continua funcionando localmente com `npm start`.
+O `server.js` foi preparado para ser capturado como função Node.js pela Vercel
+e continua funcionando localmente com `npm start`. O `includeFiles` do
+`vercel.json` usa uma única string de glob, como exigido pelo schema da Vercel.
 
 ## Dados e classificação
 

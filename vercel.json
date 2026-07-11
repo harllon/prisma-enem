@@ -5,10 +5,7 @@
   "functions": {
     "server.js": {
       "maxDuration": 60,
-      "includeFiles": [
-        "data/question-index.json",
-        "public/**"
-      ]
+      "includeFiles": "{data/question-index.json,public/**}"
     }
   }
 }
