@@ -11,6 +11,11 @@ Também é possível filtrar:
 - por mais de 170 assuntos catalogados nas 3.123 questões. A lista se adapta
   às áreas e disciplinas marcadas, evitando diferenças de grafia.
 
+Na tela de resultados, as alternativas podem ser selecionadas diretamente no
+site. O Prisma mostra o progresso de respostas, permite limpar as marcações e,
+ao revelar o gabarito, destaca acertos e erros sem alterar a versão limpa para
+PDF.
+
 ## Rodar
 
 Requer Node.js 18 ou superior.

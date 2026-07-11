@@ -36,11 +36,15 @@ const questionList = document.querySelector("#question-list");
 const answerGrid = document.querySelector("#answer-grid");
 const resultsTitle = document.querySelector("#results-title");
 const resultsSubtitle = document.querySelector("#results-subtitle");
+const selectionProgress = document.querySelector("#selection-progress");
+const clearAnswersButton = document.querySelector("#clear-answers-button");
 const printCoverMeta = document.querySelector("#print-cover-meta");
 const topicInput = document.querySelector("#topic-input");
 const topicHelp = document.querySelector("#topic-help");
 let lastPayload = null;
 let currentQuestions = [];
+let selectedAnswers = new Map();
+let answersVisible = false;
 let toastTimer;
 let topicCatalog = [];
 let pendingTopic = "";
@@ -255,13 +259,20 @@ function bindImageFallbacks() {
 function renderQuestion(question) {
   const context = question.context || question.contextLocal || "";
   const alternatives = (question.alternatives || []).map((alternative) => `
-    <div class="alternative">
+    <button
+      type="button"
+      class="alternative"
+      data-question-order="${question.order}"
+      data-alternative-letter="${escapeHtml(alternative.letter)}"
+      aria-pressed="false"
+      aria-label="Selecionar alternativa ${escapeHtml(alternative.letter)} da questão ${question.order}"
+    >
       <span class="alternative-letter">${escapeHtml(alternative.letter)}</span>
       <div>
         ${alternative.text ? `<p>${formatQuestionText(alternative.text)}</p>` : ""}
         ${imageMarkup(alternative.image, "alternative-image", `Imagem da alternativa ${alternative.letter}`)}
       </div>
-    </div>
+    </button>
   `).join("");
   const skill = question.skill?.code ? ` · ${escapeHtml(question.skill.code)}` : "";
   const b = Number.isFinite(Number(question.param_b)) ? ` · b ${Number(question.param_b).toFixed(2).replace(".", ",")}` : "";
@@ -275,7 +286,7 @@ function renderQuestion(question) {
     question.index ? `Questão ${question.index} na prova original` : null
   ].filter(Boolean).join(" - ");
   return `
-    <article class="question-card">
+    <article class="question-card" data-question-order="${question.order}">
       <header class="question-meta">
         <div class="screen-question-meta">
           <span class="question-number">${question.order}</span>
@@ -297,15 +308,60 @@ function renderQuestion(question) {
   `;
 }
 
+function updateSelectionUI() {
+  const total = currentQuestions.length;
+  const answered = selectedAnswers.size;
+  if (selectionProgress) {
+    selectionProgress.textContent = total
+      ? `${answered} de ${total} ${total === 1 ? "questão respondida" : "questões respondidas"}`
+      : "0 respondidas";
+  }
+  if (clearAnswersButton) clearAnswersButton.disabled = answered === 0;
+
+  const questionByOrder = new Map(currentQuestions.map((question) => [String(question.order), question]));
+  questionList.querySelectorAll(".question-card").forEach((card) => {
+    card.classList.toggle("answered", selectedAnswers.has(card.dataset.questionOrder));
+  });
+  questionList.querySelectorAll(".alternative").forEach((button) => {
+    const order = button.dataset.questionOrder;
+    const letter = button.dataset.alternativeLetter;
+    const selected = selectedAnswers.get(order) === letter;
+    const question = questionByOrder.get(order);
+    const correct = question?.correctAlternative;
+    button.classList.toggle("selected", selected);
+    button.classList.toggle("answer-visible", answersVisible);
+    button.classList.toggle("correct", answersVisible && correct === letter);
+    button.classList.toggle("wrong", answersVisible && selected && correct && correct !== letter);
+    button.setAttribute("aria-pressed", selected ? "true" : "false");
+  });
+
+  answerGrid.querySelectorAll(".answer-item").forEach((item) => {
+    const chosen = selectedAnswers.get(item.dataset.answerOrder);
+    const question = questionByOrder.get(item.dataset.answerOrder);
+    item.classList.toggle("answered", Boolean(chosen));
+    item.classList.toggle("user-correct", Boolean(chosen && question?.correctAlternative === chosen));
+    item.classList.toggle("user-wrong", Boolean(chosen && question?.correctAlternative && question.correctAlternative !== chosen));
+    const userAnswer = item.querySelector(".user-answer");
+    if (userAnswer) userAnswer.textContent = chosen ? `Sua: ${chosen}` : "Sua: —";
+  });
+}
+
 function renderResults(data) {
   currentQuestions = data.questions;
+  selectedAnswers = new Map();
+  answersVisible = false;
   questionList.innerHTML = data.questions.map(renderQuestion).join("");
   bindImageFallbacks();
   answerGrid.innerHTML = data.questions.map((question) => `
-    <div class="answer-item"><span>${question.order}</span><b>${escapeHtml(question.correctAlternative || "—")}</b></div>
+    <div class="answer-item" data-answer-order="${question.order}">
+      <span>${question.order}</span>
+      <b>${escapeHtml(question.correctAlternative || "—")}</b>
+      <small class="user-answer">Sua: —</small>
+    </div>
   `).join("");
   answerGrid.classList.add("answers-hidden");
   document.querySelector("#toggle-answers").textContent = "Mostrar respostas";
+  updateSelectionUI();
 
   const count = data.questions.length;
   const years = [...new Set(data.questions.map((question) => question.year))].sort();
@@ -464,8 +520,25 @@ document.querySelectorAll("#difficulty-grid input, #total-input, #year-from, #ye
   input.addEventListener("input", updateUI);
 });
 document.querySelector("#toggle-answers").addEventListener("click", (event) => {
-  const isHidden = answerGrid.classList.toggle("answers-hidden");
-  event.currentTarget.textContent = isHidden ? "Mostrar respostas" : "Ocultar respostas";
+  answersVisible = answerGrid.classList.toggle("answers-hidden") === false;
+  event.currentTarget.textContent = answersVisible ? "Ocultar respostas" : "Mostrar respostas";
+  updateSelectionUI();
+});
+questionList.addEventListener("click", (event) => {
+  const button = event.target.closest(".alternative");
+  if (!button) return;
+  const order = button.dataset.questionOrder;
+  const letter = button.dataset.alternativeLetter;
+  if (selectedAnswers.get(order) === letter) {
+    selectedAnswers.delete(order);
+  } else {
+    selectedAnswers.set(order, letter);
+  }
+  updateSelectionUI();
+});
+clearAnswersButton.addEventListener("click", () => {
+  selectedAnswers = new Map();
+  updateSelectionUI();
 });
 document.querySelector("#print-button").addEventListener("click", () => {
   if (!currentQuestions.length) return;

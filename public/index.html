@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles.css?v=5" />
+    <link rel="stylesheet" href="/styles.css?v=7" />
   </head>
   <body>
     <header class="site-header">
@@ -251,11 +251,16 @@
             <p class="eyebrow">CADERNO PRONTO</p>
             <h2 id="results-title">Seu simulado</h2>
             <p id="results-subtitle"></p>
+            <p class="selection-progress" id="selection-progress">0 respondidas</p>
           </div>
           <div class="toolbar-actions">
             <button type="button" class="secondary-button" id="regenerate-button">
               <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66L20 8M20 3v5h-5"/></svg>
               Sortear outro
+            </button>
+            <button type="button" class="secondary-button" id="clear-answers-button" disabled>
+              <svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>
+              Limpar respostas
             </button>
             <button type="button" class="print-button" id="print-button">
               <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
@@ -330,6 +335,6 @@
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="/app.js?v=8" defer></script>
+    <script src="/app.js?v=9" defer></script>
   </body>
 </html>
